@@ -206,7 +206,8 @@ wget -O models/yolov5s.pt https://huggingface.co/Ultralytics/YOLOv5/blob/main/yo
 Create a dataset with the following structure:
 
 ```
-Classified Dataset/
+Face Dataset/
+├── Unknown/
 ├── person1/
 │   ├── image1.jpg
 │   ├── image2.jpg
@@ -219,10 +220,12 @@ Classified Dataset/
 
 Each person should have their own directory containing multiple face images.
 
+It is recommended to have an Unknown File for preventing Overfitting to classes. Personally, For this project I pulled 500 random images from the Labelled Faces in the Wild (LFW) dataset.
+
 ### Step 4: Data Augmentation (Optional but Recommended)
 
 ```bash
-python -c "from utils import augment_dataset; augment_dataset('Classified Dataset', 'augmented_dataset', samples_per_class=100)"
+python -c "from utils import augment_dataset; augment_dataset('Face Dataset', 'augmented_dataset', samples_per_class=100)"
 ```
 
 This will create an augmented dataset with approximately 100 images per person, which helps improve model performance.
@@ -245,14 +248,6 @@ python face_recognition_app.py
 
 ### Step 7: Using the Application
 
-#### With the PyQt5 GUI:
-
-1. Navigate through the tabs for different functionalities:
-   - **Recognition**: Real-time face recognition from webcam
-   - **Registration**: Add new faces to the database
-   - **Database**: View and manage registered faces
-   - **Settings**: Configure model paths and parameters
-
 #### With the Tkinter GUI:
 
 1. Adjust parameters in real-time:
@@ -266,7 +261,7 @@ python face_recognition_app.py
 ## Performance Considerations
 
 - **YOLOv5 vs MTCNN**: YOLOv5 is approximately 4.8x faster than MTCNN but may have slightly lower precision in some cases
-- **Batch Size**: Larger batch sizes during training can improve performance but require more memory
+- **Batch Size**: Larger batch sizes during training can improve performance, but require more memory
 - **Model Size**: The current implementation uses InceptionV3 for embeddings, which provides a good balance between accuracy and speed
 - **Real-time Performance**: For optimal real-time performance, use the YOLOv5 detector with a confidence threshold of 0.5-0.7
 
@@ -299,7 +294,7 @@ class FaceDetector:
     
     def detect_faces(self, image, confidence_threshold=0.5):
         # Implementation for face detection
-        # Returns list of face bounding boxes
+        # Returns a list of face bounding boxes
         # ...
 ```
 
