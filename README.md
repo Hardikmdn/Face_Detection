@@ -1,8 +1,8 @@
 ## Project Overview
 
-This project implements an face recognition system that combines multiple face detection methods using deep learning techniques,
+This project implements a face recognition system that combines multiple face detection methods using deep learning techniques,
 
-I developed this system to explore the practical applications of deep learning in computer vision, specifically focusing on face recognition tasks. The implementation demonstrates how different components (detection, embedding generation, and classification) combine to create a realtime face recognition model.
+I developed this system to explore the practical applications of deep learning in computer vision, specifically focusing on face recognition tasks. The implementation demonstrates how different components (detection, embedding generation, and classification) combine to create a real-time face recognition model.
 
 ## What I Implemented
 
@@ -18,7 +18,6 @@ I developed this system to explore the practical applications of deep learning i
    - **Unknown Face Detection**: Implemented confidence thresholding for identifying unknown individuals
 
 3. **User Interfaces**
-   - **PyQt5 GUI**: Developed a comprehensive tabbed interface for all system functions
    - **Tkinter GUI**: Created a lightweight interface with real-time parameter adjustment capabilities
 
 4. **Utilities and Tools**
@@ -36,7 +35,7 @@ I implemented both MTCNN and YOLOv5 detectors to provide flexibility and perform
 
 - **YOLOv5**: Implemented for its superior speed (approximately 4.8x faster than MTCNN) and better performance in challenging conditions like poor lighting and partial occlusions. This makes it ideal for real-time applications.
 
-The performance comparison between these detectors is visualized in the `detector_performance_visualization.py` module, which demonstrates the trade-offs between speed and accuracy.
+The performance comparison between these detectors is visualized in the `detector_performance_visualization.py` module, demonstrating the trade-offs between speed and accuracy.
 
 ### Recognition Architecture
 
@@ -220,7 +219,7 @@ Face Dataset/
 
 Each person should have their own directory containing multiple face images.
 
-It is recommended to have an Unknown File for preventing Overfitting to classes. Personally, For this project I pulled 500 random images from the Labelled Faces in the Wild (LFW) dataset.
+It is recommended to have an Unknown File for preventing overfitting to classes. Personally, For this project, I pulled 500 random images from the Labelled Faces in the Wild (LFW) dataset.
 
 ### Step 4: Data Augmentation (Optional but Recommended)
 
