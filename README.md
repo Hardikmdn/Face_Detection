@@ -323,30 +323,3 @@ class FaceRecognizer:
         # Return name and confidence
         # ...
 ```
-
-#### GUI Implementation
-```python
-# In face_recognition_gui.py
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget
-from PyQt5.QtCore import QThread, pyqtSignal
-import cv2
-
-class RecognitionThread(QThread):
-    update_frame = pyqtSignal(np.ndarray)
-    
-    def __init__(self, face_detector, face_recognizer):
-        super().__init__()
-        self.face_detector = face_detector
-        self.face_recognizer = face_recognizer
-        # ...
-    
-    def run(self):
-        # Capture video and perform recognition
-        # ...
-
-class FaceRecognitionGUI(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        # Set up UI with tabs
-        # ...
-```
