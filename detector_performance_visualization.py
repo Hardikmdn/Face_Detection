@@ -29,7 +29,7 @@ def create_detector_comparison_visualization(output_dir='detector_comparison'):
 
 def create_speed_comparison(output_dir):
     """Create speed comparison visualization."""
-    # Data based on literature and our enhanced implementation
+    # Data based on literature and our  implementation
     detectors = ['MTCNN', 'YOLOv5']
     
     # Average detection times in milliseconds (typical values from literature)
@@ -78,7 +78,7 @@ def create_speed_comparison(output_dir):
 
 def create_detection_performance_comparison(output_dir):
     """Create detection performance comparison visualization."""
-    # Data based on literature and our enhanced implementation
+    # Data based on literature and our  implementation
     categories = ['Precision', 'Recall', 'F1-Score']
     
     # Performance metrics (approximate values from literature)
@@ -278,7 +278,7 @@ def create_comprehensive_dashboard(output_dir):
         "• YOLOv5 has better recall, detecting more faces in challenging conditions",
         "• MTCNN has higher precision but may miss faces in complex scenes",
         "• YOLOv5 performs better with multiple faces and varying poses",
-        "• Enhanced YOLOv5 implementation improves detection recall by 15%",
+        "• YOLOv5 implementation improves detection recall by 15%",
         "• MTCNN requires less GPU memory but more CPU resources",
         "• YOLOv5 shows better performance in low-light conditions"
     ]

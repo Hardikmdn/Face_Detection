@@ -125,11 +125,9 @@ class FaceRecognitionApp:
             
             # Initialize face recognizer
             model_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'models')
-            facenet_model_path = os.path.join(model_dir, 'facenet_keras.h5')
             classifier_path = os.path.join(model_dir, 'face_classifier_model.h5')
             
             self.face_recognizer = FaceRecognizer(
-                model_path=facenet_model_path,
                 classifier_path=classifier_path
             )
             

@@ -1,0 +1,103 @@
+# Datasets
+dataset/
+datasets/
+Dataset/
+Datasets/
+data/
+*/dataset*/
+*/Dataset*/
+
+# Augmented datasets
+augmented_dataset/
+augmented_datasets/
+*/augmented_dataset*/
+
+# Dataset analysis
+Dataset Analysis/
+dataset_analysis/
+*/analysis*/
+*/Analysis*/
+
+# Metrics and results
+metrics/
+Metrics/
+results/
+Results/
+*/metrics*/
+*/Metrics*/
+
+# Model files
+*.pt
+*.pth
+*.h5
+*.hdf5
+*.pb
+*.onnx
+*.tflite
+*.mlmodel
+models/
+*/models/
+*/tuner_results/
+
+# Environment and configuration
+.env
+.env.*
+config.ini
+*.cfg
+*.config
+credentials.json
+*_key.json
+*_credentials.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+py*_env/
+venv/
+ENV/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

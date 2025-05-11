@@ -56,7 +56,7 @@ def load_dataset(dataset_path, face_detector=None, required_size=(160, 160)):
     
     return np.array(face_images), np.array(labels)
 
-def augment_dataset(dataset_path, output_path, samples_per_class=100, face_detector=None):t
+def augment_dataset(dataset_path, output_path, samples_per_class=100, face_detector=None):
     # Create output directory if it doesn't exist
     os.makedirs(output_path, exist_ok=True)
     
@@ -220,7 +220,6 @@ def create_model_directories():
     
     return {
         'base_dir': base_dir,
-        'facenet_model': os.path.join(base_dir, 'facenet_keras.h5'),
         'classifier_model': os.path.join(base_dir, 'face_classifier_model.h5'),
         'yolov5_model': os.path.join(base_dir, 'yolov5_face.pt')
     }

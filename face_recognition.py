@@ -9,14 +9,14 @@ from tensorflow.keras.applications.inception_v3 import preprocess_input
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.regularizers import l2
-from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 from sklearn.preprocessing import LabelEncoder
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 class FaceRecognizer:
-    def __init__(self, model_path=None, classifier_path=None):
+    def __init__(self, classifier_path=None):
         # Set default paths for classifier
         if classifier_path is None:
             classifier_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 
@@ -112,30 +112,33 @@ class FaceRecognizer:
         inputs = Input(shape=(embedding_size,))
         
         # Initial dense layer to process the embedding
-        x = Dense(1024, kernel_regularizer=l2(0.0005))(inputs)
+        x = Dense(1024, kernel_regularizer=l2(0.0001))(inputs)
         x = BatchNormalization()(x)
         x = LeakyReLU(alpha=0.1)(x)
-        x = Dropout(0.4)(x)
+        x = Dropout(0.3)(x)  # Reduced dropout to prevent underfitting
         
         # First residual block (512 units)
-        x = self.residual_block(x, 512, dropout_rate=0.3)
+        x = self.residual_block(x, 512, dropout_rate=0.25)
         
         # Second residual block (256 units)
         x = self.residual_block(x, 256, dropout_rate=0.2)
         
+        # Third residual block (128 units) - added for more capacity
+        x = self.residual_block(x, 128, dropout_rate=0.15)
+        
         # Final feature layer
-        x = Dense(128, kernel_regularizer=l2(0.0005))(x)
+        x = Dense(128, kernel_regularizer=l2(0.0001))(x)
         x = BatchNormalization()(x)
         x = LeakyReLU(alpha=0.1)(x)
         
         # Output layer with softmax activation
-        outputs = Dense(num_classes, activation='softmax', kernel_regularizer=l2(0.0005))(x)
+        outputs = Dense(num_classes, activation='softmax', kernel_regularizer=l2(0.0001))(x)
         
         # Create and compile model
         model = Model(inputs=inputs, outputs=outputs)
         
         model.compile(
-            optimizer=Adam(learning_rate=0.001),
+            optimizer=Adam(learning_rate=0.0005),  # Lower learning rate for better convergence
             loss='categorical_crossentropy',
             metrics=['accuracy']
         )
@@ -157,6 +160,12 @@ class FaceRecognizer:
         encoded_labels = self.label_encoder.fit_transform(labels)
         num_classes = len(self.label_encoder.classes_)
         
+        # Print class distribution
+        print("Class distribution:")
+        unique_labels, counts = np.unique(encoded_labels, return_counts=True)
+        for i, label in enumerate(self.label_encoder.classes_):
+            print(f"{label}: {counts[i]} samples")
+        
         # Convert to categorical
         categorical_labels = to_categorical(encoded_labels, num_classes=num_classes)
         
@@ -165,8 +174,18 @@ class FaceRecognizer:
             embeddings, categorical_labels, test_size=test_size, random_state=42, stratify=categorical_labels
         )
         
-        # Build  classifier
-        print(f"Building  classifier for {num_classes} classes...")
+        # Calculate class weights to handle imbalanced classes
+        class_weights = {}
+        total_samples = len(encoded_labels)
+        for i, count in enumerate(counts):
+            class_weights[i] = total_samples / (count * num_classes)
+        
+        print("Class weights for balanced training:")
+        for i, label in enumerate(self.label_encoder.classes_):
+            print(f"{label}: {class_weights[i]:.2f}")
+        
+        # Build classifier
+        print(f"Building classifier for {num_classes} classes...")
         self.classifier = self.build_classifier(num_classes)
         
         # Create callbacks for better training
@@ -180,19 +199,30 @@ class FaceRecognizer:
         
         early_stopping = EarlyStopping(
             monitor='val_loss',
-            patience=15,
+            patience=20,  # Increased patience for better convergence
             restore_best_weights=True,
             verbose=1
         )
         
-        # Train the model with callbacks
-        print("Training  classifier...")
+        # Add model checkpoint to save best model during training
+        checkpoint_path = os.path.join(os.path.dirname(self.classifier_path), 'best_model_checkpoint.h5')
+        model_checkpoint = ModelCheckpoint(
+            checkpoint_path,
+            monitor='val_accuracy',
+            save_best_only=True,
+            mode='max',
+            verbose=1
+        )
+        
+        # Train the model with callbacks and class weights
+        print("Training classifier...")
         history = self.classifier.fit(
             X_train, y_train,
             validation_data=(X_test, y_test),
             epochs=epochs,
             batch_size=batch_size,
-            callbacks=[reduce_lr, early_stopping],
+            callbacks=[reduce_lr, early_stopping, model_checkpoint],
+            class_weight=class_weights,  # Add class weights for balanced training
             verbose=1
         )
         

@@ -83,7 +83,6 @@ def main():
     # Initialize face recognizer
     print("Initializing face recognizer...")
     face_recognizer = FaceRecognizer(
-        model_path=model_dirs['facenet_model'],
         classifier_path=os.path.join(args.output_dir, 'face_classifier_model.h5')
     )
     
