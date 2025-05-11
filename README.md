@@ -1,12 +1,8 @@
-# Deep Learning Face Recognition System
-
-A comprehensive face recognition system implementing state-of-the-art deep learning techniques with dual GUI interfaces (PyQt5 and Tkinter) for real-time face detection and recognition.
-
 ## Project Overview
 
-This project implements an advanced face recognition system that combines multiple face detection methods with deep learning-based recognition. The system is designed to be both accurate and efficient, with a focus on real-time performance and user-friendly interfaces.
+This project implements an face recognition system that combines multiple face detection methods using deep learning techniques,
 
-I developed this system to explore the practical applications of deep learning in computer vision, specifically focusing on face recognition tasks. The implementation demonstrates how different components (detection, embedding generation, and classification) can be integrated into a cohesive system with multiple interface options.
+I developed this system to explore the practical applications of deep learning in computer vision, specifically focusing on face recognition tasks. The implementation demonstrates how different components (detection, embedding generation, and classification) combine to create a realtime face recognition model.
 
 ## What I Implemented
 
@@ -46,17 +42,12 @@ The performance comparison between these detectors is visualized in the `detecto
 
 I chose InceptionV3 as the base embedding model due to its balance of accuracy and computational efficiency. The custom classifier uses residual connections to improve gradient flow during training and prevent the vanishing gradient problem, which is particularly important for deep networks.
 
-The classifier architecture includes:
+Built a custom classifier fully connected head. The classifier architecture includes:
 - Residual blocks with batch normalization and leaky ReLU activations
 - Dropout layers for regularization to prevent overfitting
 - L2 regularization on weights to improve generalization
 
 ### User Interface Design
-
-I implemented two different GUI frameworks to serve different use cases:
-
-- **PyQt5**: Provides a comprehensive interface with multiple tabs for different functionalities. This is ideal for users who need access to all system features in an organized manner.
-
 - **Tkinter**: Offers a simpler, more lightweight interface with real-time parameter adjustment. This is perfect for testing and fine-tuning detection and recognition parameters on the fly.
 
 ## How I Implemented It
@@ -174,9 +165,16 @@ Project/
 ├── models/                      # Contains model files (excluded from git)
 │   ├── yolov5s.pt               # YOLOv5 model
 │   ├── face_classifier_model.h5 # Trained classifier
-│   └── facenet_keras.h5         # FaceNet model
-├── Classified Dataset/          # Original dataset (excluded from git)
-├── augmented_dataset/           # Augmented dataset (excluded from git)
+├── Face Dataset/          # Original dataset (excluded from git)
+│   ├── Unknown/                 # Unknown faces
+│   ├── person1/                 # Person 1
+│   ├── person2/                 # Person 2
+│   ├── ...
+├── Augmented Dataset/           # Augmented dataset (excluded from git)
+│   ├── Unknown/                 # Unknown faces
+│   ├── person1/                 # Person 1
+│   ├── person2/                 # Person 2
+│   ├── ...
 └── [python files]               # Implementation files
 ```
 
@@ -199,11 +197,8 @@ pip install -r requirements.txt
 # Create models directory
 mkdir -p models
 
-# Download FaceNet model
-wget -O models/facenet_keras.h5 https://github.com/nyoki-mtl/keras-facenet/releases/download/v0.3.0/facenet_keras.h5
-
 # Download YOLOv5 face model
-wget -O models/yolov5s.pt https://github.com/deepcam-cn/yolov5-face/releases/download/v0.3.0/yolov5n-face.pt
+wget -O models/yolov5s.pt https://huggingface.co/Ultralytics/YOLOv5/blob/main/yolov5s.pt
 ```
 
 ### Step 3: Prepare Your Dataset
@@ -233,9 +228,9 @@ python -c "from utils import augment_dataset; augment_dataset('Classified Datase
 This will create an augmented dataset with approximately 100 images per person, which helps improve model performance.
 
 ### Step 5: Train the Recognition Model
-
+You are recommended to play witht the parameters to get the best results. 
 ```bash
-python train_model.py --dataset "augmented_dataset" --epochs 100 --batch-size 32 --validation-split 0.2
+python train_model.py --dataset "Face Dataset" --epochs 100  --augment --use-augmented  --detector mtcnn  --confidence 0.9
 ```
 
 The trained model will be saved to `models/face_classifier_model.h5`.
@@ -245,10 +240,6 @@ The trained model will be saved to `models/face_classifier_model.h5`.
 Choose one of the GUI applications:
 
 ```bash
-# Run the PyQt5 GUI (comprehensive interface)
-python face_recognition_gui.py
-
-# OR
 # Run the Tkinter GUI (real-time parameter adjustment)
 python face_recognition_app.py
 
@@ -286,7 +277,6 @@ python face_recognition_app.py
 - **Memory Errors**: Reduce batch size during training if encountering memory issues
 - **Detection Issues**: Adjust confidence thresholds based on lighting conditions and camera quality
 
-## Future Improvements
 
 ### Implementation Details
 

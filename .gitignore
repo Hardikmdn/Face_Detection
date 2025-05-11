@@ -1,11 +1,6 @@
 # Datasets
-dataset/
-datasets/
-Dataset/
-Datasets/
-data/
-*/dataset*/
-*/Dataset*/
+Face Dataset/
+*/Face Dataset*/
 
 # Augmented datasets
 augmented_dataset/
@@ -13,25 +8,15 @@ augmented_datasets/
 */augmented_dataset*/
 
 # Dataset analysis
-Dataset Analysis/
-dataset_analysis/
-*/analysis*/
-*/Analysis*/
-
-# Metrics and results
-metrics/
-Metrics/
-results/
-Results/
-*/metrics*/
-*/Metrics*/
+Face Dataset Analysis/
+*/Face Dataset Analysis*/
 
 # Model files
 *.pt
 *.pth
 *.h5
 *.hdf5
-*.pb
+*.pb    
 *.onnx
 *.tflite
 *.mlmodel
@@ -40,7 +25,7 @@ models/
 */tuner_results/
 
 # Environment and configuration
-.env
+.en
 .env.*
 config.ini
 *.cfg
